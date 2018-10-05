@@ -3,6 +3,7 @@ var fs                  = require('fs');
 var fileExists          = require('file-exists');
 var git                 = require('gulp-git');
 var runSequence         = require('run-sequence');
+var wait                = require('gulp-wait');
 
 var config              = require('../../gulpconfig');
 
@@ -10,7 +11,7 @@ var config              = require('../../gulpconfig');
 /**
  * These tasks do the following to kick a project off:
  * 1. Set up Git in project file
- * 2. Add all current project files
+ * 2. Add package.json file
  * 3. Commits with "Initial Commit" message
  * 4. Sets up "build" and "stage" branches
  * 5. Adds the origin from the package.json
@@ -46,7 +47,8 @@ gulp.task( 'git-init', function() {
 // Add any files
 gulp.task('git-add-existing', function() {
     console.log('adding existing');
-    return gulp.src('*')
+    return gulp.src('./package-lock.json')
+        .pipe(wait(1500))
         .pipe(git.add());
 });
 
@@ -54,8 +56,8 @@ gulp.task('git-add-existing', function() {
 // Commit files
 gulp.task('git-commit', function(){
     console.log('committing');
-    return gulp.src('.')
-        .pipe(git.commit('initial commit'));
+    return gulp.src('./package-lock.json')
+        .pipe(git.commit('Initial Commit'));
 });
 
 
