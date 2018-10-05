@@ -19,7 +19,6 @@ gulp.task( 'watch', function() {
     gulp.watch( base + paths.css.watch, [ 'css:stream' ] ); // Reload on SCSS file changes.
     gulp.watch( base + paths.js.vendor, [ 'js:collate', reload ] ); // Reload on vendor JS file changes.
     gulp.watch( base + paths.js.custom, [ 'js:collate', reload ] ); // Reload on custom JS file changes.
-    gulp.watch( base + paths.img.allImgs, [ 'image', reload ] );
 });
 
 gulp.task('css:stream',['css:collate'], function() {
