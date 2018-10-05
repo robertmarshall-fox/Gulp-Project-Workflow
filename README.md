@@ -4,7 +4,7 @@ A comprehensive Gulp workflow to allow automated management across all stages fo
 ## Setup
 
 ### Config
-Make sure ssh details, ect, are stored in the workflow-config.js file. This is ignored by default so will not be pushed to any repository.
+Make sure ssh details, ect, are stored in the "workflow-config.json" file. This is ignored by default so will not be pushed to any repository. Rename the "workflow-config-default.json" file to this name, and enter your projects details.
 
 ## Commands
 
