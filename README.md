@@ -11,7 +11,7 @@ Make sure ssh details, ect, are stored in the "workflow-config.json" file. This 
 ### Initiate Git
 
 ```javascript
-gulp git-init
+gulp git-kickoff
 ```
 
 This task sets up the essential git bits and pieces
@@ -21,7 +21,7 @@ This task sets up the essential git bits and pieces
 3. Commits "Initial Commit" message
 4. Sets up 2 branches - "build" & "stage"
 5. Add the git origin location from package.json
-6. Pushes files to cloud
+6. Publishes files to cloud
 7. Moves current branch to "build"
 
 ## Staging Server Git
