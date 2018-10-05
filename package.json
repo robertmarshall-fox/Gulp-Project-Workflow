@@ -1,0 +1,44 @@
+{
+  "name": "Gulp Project Workflow",
+  "author": "Robert Marshall",
+  "authorUri": "http://www.fox.agency",
+  "version": "0.0.1",
+  "description": "A comprehensive Gulp workflow to allow automated management across all stages",
+  "homepage": "",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robertmarshall-fox/Gulp-Project-Workflow.git"
+  },
+  "license": "CC-BY-SA-3.0",
+  "licenseUri": "https://creativecommons.org/licenses/by-sa/3.0/",
+  "dependencies": {
+    "normalize-css": "^2.3.1"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.24.6",
+    "dev-ip": "^1.0.1",
+    "file-exists": "^5.0.1",
+    "gulp": "^3.9.1",
+    "gulp-add-src": "^1.0.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-bump": "latest",
+    "gulp-changed": "^3.2.0",
+    "gulp-concat": "^2.5.2",
+    "gulp-concat-css": "^3.1.0",
+    "gulp-filter": "^4.0.0",
+    "gulp-fs": "^0.0.2",
+    "gulp-imagemin": "^2.4.0",
+    "gulp-line-ending-corrector": "^1.0.2",
+    "gulp-merge-media-queries": "^0.2.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^3.2.1",
+    "gulp-sort": "^2.0.0",
+    "gulp-sourcemaps": "^1.12.1",
+    "gulp-uglify": "^1.5.3",
+    "gulp-uglifycss": "^1.1.0",
+    "pump": "latest",
+    "require-dir": "latest",
+    "yargs": "^12.0.1"
+  }
+}
