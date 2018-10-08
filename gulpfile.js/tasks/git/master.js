@@ -55,7 +55,7 @@ var config              = require('../../../gulpconfig');
 
 
 // Move to stage branch
-gulp.task( 'git-move-to-master', function( done ) {
+gulp.task( 'git-move-to-master', function() {
     console.log('Moved to master branch');
     git.checkout('master', function (err) {
         if (err) throw err;
@@ -64,12 +64,9 @@ gulp.task( 'git-move-to-master', function( done ) {
 
 
 // Merge stage to current branch
-gulp.task('git-merge-stage', function( done ){
+gulp.task('git-merge-stage', function(){
     git.merge('stage', function (err) {
-        if (err) {
-            done(err);
-        }
-        done()
+        if (err) throw(err);
     });
 });
 

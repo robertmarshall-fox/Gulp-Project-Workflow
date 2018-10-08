@@ -49,7 +49,7 @@ var config              = require('../../../gulpconfig');
 
 
 // Move to stage branch
-gulp.task( 'git-move-to-stage', function( done ) {
+gulp.task( 'git-move-to-stage', function() {
     console.log('Moved to stage branch');
     git.checkout('stage', function (err) {
         if (err) throw err;
@@ -58,12 +58,9 @@ gulp.task( 'git-move-to-stage', function( done ) {
 
 
 // Merge build to current branch
-gulp.task('git-merge-build', function( done ){
+gulp.task('git-merge-build', function(){
     git.merge('build', function (err) {
-        if (err) {
-            done(err);
-        }
-        done()
+        if (err) throw(err);
     });
 });
 
