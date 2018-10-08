@@ -10,21 +10,11 @@ var getPackageJSON = function() {
     return false;
 };
 
-var getWorkflowConfig = function() {
-    var path = './workflow-config.json';
-    if( fs.existsSync() ){
-        return JSON.parse(fs.readFileSync(path, 'utf8'));
-    }
-    return false;
-}
-
 module.exports = {
 
     projectName: getPackageJSON().name,
 
     packageJson: getPackageJSON(),
-
-    workflowConfig: getWorkflowConfig(),
 
     base: './',
 
