@@ -4,8 +4,6 @@ var fileExists          = require('file-exists');
 var git                 = require('gulp-git');
 var prompt              = require('gulp-prompt');
 
-var runSequence         = require('run-sequence');
-
 var config              = require('../../../gulpconfig');
 
 /**
@@ -25,12 +23,7 @@ var config              = require('../../../gulpconfig');
 
  gulp.task( 'git-stage', function() {
          console.log('Lets push to staging branch');
-         runSequence(
-             'git-confirm-staging-merge',
-             'git-merge-build',
-             'git-publish-stage',
-             'git-checkout-build'
-         );
+         gulp.start('git-confirm-staging-merge')
  });
 
 
@@ -42,7 +35,7 @@ var config              = require('../../../gulpconfig');
          message: 'Are you sure you are ready to stage?'
      }, function(res){
          if(res.start){
-             gulp.start('git-move-to-stage')
+             gulp.start('git-move-to-stage');
          }
      }));
  });
@@ -52,7 +45,11 @@ var config              = require('../../../gulpconfig');
 gulp.task( 'git-move-to-stage', function() {
     console.log('Moved to stage branch');
     git.checkout('stage', function (err) {
-        if (err) throw err;
+        if (err) {
+            throw err;
+        } else {
+            gulp.start('git-merge-build');
+        }
     });
 });
 
@@ -60,7 +57,11 @@ gulp.task( 'git-move-to-stage', function() {
 // Merge build to current branch
 gulp.task('git-merge-build', function(){
     git.merge('build', function (err) {
-        if (err) throw(err);
+        if (err) {
+            throw err;
+        } else {
+            gulp.start('git-publish-stage');
+        }
     });
 });
 
@@ -69,6 +70,10 @@ gulp.task('git-merge-build', function(){
 gulp.task('git-publish-stage', function(){
     console.log('Publish to stage');
     git.push('origin', 'stage', function (err) {
-        if (err) throw err;
+        if (err) {
+            throw err;
+        } else {
+            gulp.start('git-checkout-build');
+        }
     });
 });
