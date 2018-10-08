@@ -5,7 +5,7 @@ var colors              = require('colors');
 var shell               = require('gulp-shell');
 var GulpSSH             = require('gulp-ssh');
 
-var config              = require('../../../gulpconfig');
+var config              = require('../../../workflow-config');
 var gulpConfig          = require('../../../gulpconfig');
 
 /**
@@ -100,13 +100,13 @@ gulp.task('git-publish-stage', function(){
          });
 
          console.log('Move into theme dir and clone stage branch'.red);
+         
          // Move into the theme dir
          // Init git
          // clone stage branch
          return stageSSH
             .shell(
-                'cd public_html/wp-content/themes/' +
-                config.themeFolder + ' && ' +
+                'cd public_html/wp-content/themes/' + config.themeFolder + ' && ' +
                 'git init && ' +
                 'git clone --single-branch -b stage ' + repository + ' && ' +
                 'git checkout'
@@ -134,8 +134,12 @@ gulp.task('git-publish-stage', function(){
      });
 
      console.log('Move into theme dir and pull stage branch'.red);
-     // Move into the public dir and download wp-cli
+     // Move into the theme dir
+     // pull stage branch
      return stageSSH
-        .shell('cd public_html/wp-content/themes/' + config.themeFolder + ' && git checkout stage && git pull origin stage', {filePath: 'shell.log'})
+        .shell(
+            'cd public_html/wp-content/themes/' + config.themeFolder + ' && ' +
+            'git pull origin stage'
+        , {filePath: 'shell.log'})
         .pipe(gulp.dest('./'));
  });
