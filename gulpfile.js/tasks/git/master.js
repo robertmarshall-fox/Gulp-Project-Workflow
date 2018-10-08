@@ -4,8 +4,6 @@ var fileExists          = require('file-exists');
 var git                 = require('gulp-git');
 var prompt              = require('gulp-prompt');
 
-var runSequence         = require('run-sequence');
-
 var config              = require('../../../gulpconfig');
 
 /**
@@ -30,13 +28,8 @@ var config              = require('../../../gulpconfig');
  */
 
  gulp.task( 'git-master', function() {
-         console.log('Lets push to master branch');
-         runSequence(
-             'git-confirm-master-merge',
-             'git-merge-build',
-             'git-publish-stage',
-             'git-checkout-build'
-         );
+     console.log('Lets push to master branch');
+     gulp.start('git-confirm-master-merge');
  });
 
 
@@ -48,7 +41,7 @@ var config              = require('../../../gulpconfig');
          message: 'Are you sure you everything is error free? Remeber, this goes LIVE'
      }, function(res){
          if(res.start){
-             gulp.start('git-move-to-master')
+             gulp.start('git-move-to-master');
          }
      }));
  });
@@ -58,7 +51,11 @@ var config              = require('../../../gulpconfig');
 gulp.task( 'git-move-to-master', function() {
     console.log('Moved to master branch');
     git.checkout('master', function (err) {
-        if (err) throw err;
+        if (err) {
+            throw err;
+        } else {
+            gulp.start('git-merge-stage');
+        }
     });
 });
 
@@ -66,7 +63,11 @@ gulp.task( 'git-move-to-master', function() {
 // Merge stage to current branch
 gulp.task('git-merge-stage', function(){
     git.merge('stage', function (err) {
-        if (err) throw(err);
+        if (err) {
+            throw err;
+        } else {
+            gulp.start('git-publish-master');
+        }
     });
 });
 
@@ -75,6 +76,10 @@ gulp.task('git-merge-stage', function(){
 gulp.task('git-publish-master', function(){
     console.log('Publish to master');
     git.push('origin', 'master', function (err) {
-        if (err) throw err;
+        if (err) {
+            throw err;
+        } else {
+            gulp.start('git-checkout-build');
+        }
     });
 });
