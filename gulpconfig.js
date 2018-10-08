@@ -3,11 +3,19 @@ var fs           = require('fs');
 
 // Parse values from package.json
 var getPackageJSON = function() {
-    return JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+    var path = './package.json';
+    if( fs.existsSync() ){
+        return JSON.parse(fs.readFileSync(path, 'utf8'));
+    }
+    return false;
 };
 
 var getWorkflowConfig = function() {
-    return JSON.parse(fs.readFileSync('./workflow-config.json', 'utf8'));
+    var path = './workflow-config.json';
+    if( fs.existsSync() ){
+        return JSON.parse(fs.readFileSync(path, 'utf8'));
+    }
+    return false;
 }
 
 module.exports = {
