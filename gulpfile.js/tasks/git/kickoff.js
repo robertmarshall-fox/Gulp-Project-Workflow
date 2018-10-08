@@ -101,6 +101,10 @@ gulp.task('git-publish', function(){
 gulp.task('git-checkout-build', function(){
     console.log('Move back to build branch');
     git.checkout('build', function (err) {
-        if (err) throw err;
+        if (err) {
+            throw err;
+        } else {
+            console.log('and back to build!!!');
+        }
     });
 });
