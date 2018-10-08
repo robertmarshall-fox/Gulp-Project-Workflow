@@ -4,6 +4,8 @@ var fileExists          = require('file-exists');
 var git                 = require('gulp-git');
 var runSequence         = require('run-sequence');
 
+var colors              = require('colors');
+
 var config              = require('../../../gulpconfig');
 
 /**
@@ -24,7 +26,7 @@ var config              = require('../../../gulpconfig');
 
 gulp.task( 'git-kickoff', function() {
     if( config.packageJson && config.packageJson.repository.url ){
-        console.log('Lets kick it off');
+        console.log('Lets kick it off'.green);
         runSequence(
             'git-init',
             'git-add-existing',
@@ -40,7 +42,7 @@ gulp.task( 'git-kickoff', function() {
 
 // Create Git
 gulp.task( 'git-init', function( done ) {
-    console.log('Creating Git');
+    console.log('Creating Git'.green);
     git.init(function (err) {
         if (err) {
             done(err);
@@ -52,7 +54,7 @@ gulp.task( 'git-init', function( done ) {
 
 // Add any files
 gulp.task('git-add-existing', function() {
-    console.log('adding existing');
+    console.log('adding package.json'.green);
     return gulp.src('./package-lock.json')
         .pipe(git.add());
 });
@@ -60,7 +62,7 @@ gulp.task('git-add-existing', function() {
 
 // Commit files
 gulp.task('git-commit', function(){
-    console.log('committing');
+    console.log('committing'.green);
     return gulp.src('./package-lock.json')
         .pipe(git.commit('Initial Commit'));
 });
@@ -68,11 +70,11 @@ gulp.task('git-commit', function(){
 
 // Set up branches
 gulp.task('git-branch', function(){
-    console.log('Make "build" branch');
+    console.log('Make "build" branch'.green);
     git.branch('build', function (err) {
         if (err) throw err;
     });
-    console.log('Make "stage" branch');
+    console.log('Make "stage" branch'.green);
     git.branch('stage', function (err) {
         if (err) throw err;
     });
@@ -81,7 +83,7 @@ gulp.task('git-branch', function(){
 
 // Add remote
 gulp.task('git-addremote', function(){
-    console.log('Add remote origin');
+    console.log('Add remote origin'.green);
     git.addRemote('origin', config.packageJson.repository.url, function (err) {
         if (err) throw err;
     });
@@ -90,7 +92,7 @@ gulp.task('git-addremote', function(){
 
 // Push all current files to master
 gulp.task('git-publish', function(){
-    console.log('Publish to origin');
+    console.log('Publish to origin'.green);
     git.push('origin', 'master', function (err) {
         if (err) throw err;
     });
@@ -99,12 +101,12 @@ gulp.task('git-publish', function(){
 
 // Move back to build branch
 gulp.task('git-checkout-build', function(){
-    console.log('Move back to build branch');
+    console.log('Move back to build branch'.green);
     git.checkout('build', function (err) {
         if (err) {
             throw err;
         } else {
-            console.log('and back to build!!!');
+            console.log('and back to build!!!'.green);
         }
     });
 });

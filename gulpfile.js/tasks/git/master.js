@@ -2,6 +2,9 @@ var gulp                = require('gulp');
 var fs                  = require('fs');
 var fileExists          = require('file-exists');
 var git                 = require('gulp-git');
+
+var colors              = require('colors');
+
 var prompt              = require('gulp-prompt');
 
 var config              = require('../../../gulpconfig');
@@ -27,7 +30,7 @@ var config              = require('../../../gulpconfig');
  */
 
  gulp.task( 'git-master', function() {
-     console.log('Lets push to master branch');
+     console.log('Lets push to master branch'.green);
      gulp.start('git-confirm-master-merge');
  });
 
@@ -37,7 +40,7 @@ var config              = require('../../../gulpconfig');
      .pipe(prompt.prompt({
          type: 'confirm',
          name: 'start',
-         message: 'Are you sure you everything is error free? Remeber, this goes LIVE'
+         message: 'Are you sure you everything is error free? Remeber, this goes LIVE'.red
      }, function(res){
          if(res.start){
              gulp.start('git-move-to-master');
