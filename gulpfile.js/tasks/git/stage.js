@@ -72,18 +72,14 @@ gulp.task('git-merge-build', function( done ){
 // Ask user what commit message
 // Commit files
 gulp.task('git-commit-staging-merge', function( done ){
+    console.log('Committing merge');
     return gulp.src( './*')
-    .pipe( prompt.prompt({
-        type: 'input',
-        name: 'task',
-        message: 'What commit message would you like to add?'
-    }, function(res){
-        console.log('Committing merge');
+    .pipe(
         git.commit(() => {
             res.task, {args: '-a'}
             done()
-        });
-    }));
+        })
+    );
 });
 
 
