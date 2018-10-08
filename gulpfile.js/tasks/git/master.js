@@ -34,7 +34,6 @@ var config              = require('../../../gulpconfig');
          runSequence(
              'git-confirm-master-merge',
              'git-merge-build',
-             'git-commit-staging-merge',
              'git-publish-stage',
              'git-checkout-build'
          );
@@ -72,20 +71,6 @@ gulp.task('git-merge-stage', function( done ){
         }
         done()
     });
-});
-
-
-// Ask user what commit message
-// Commit files
-gulp.task('git-commit-master-merge', function( done ){
-    console.log('committing merge');
-    return gulp.src( './*')
-    .pipe(
-        git.commit(() => {
-            res.task, {args: '-a'}
-            done()
-        })
-    );
 });
 
 
