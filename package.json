@@ -13,6 +13,7 @@
   "license": "CC-BY-SA-3.0",
   "licenseUri": "https://creativecommons.org/licenses/by-sa/3.0/",
   "dependencies": {
+    "gulp-download": "0.0.1",
     "normalize-css": "^2.3.1"
   },
   "devDependencies": {
@@ -31,6 +32,7 @@
     "gulp-prompt": "^1.1.0",
     "gulp-filter": "^4.0.0",
     "gulp-fs": "^0.0.2",
+    "gulp-ssh": "^0.7.0",
     "gulp-imagemin": "^2.4.0",
     "gulp-line-ending-corrector": "^1.0.2",
     "gulp-merge-media-queries": "^0.2.1",

@@ -1,6 +1,4 @@
 var gulp                = require('gulp');
-var fs                  = require('fs');
-var fileExists          = require('file-exists');
 var git                 = require('gulp-git');
 var runSequence         = require('run-sequence');
 

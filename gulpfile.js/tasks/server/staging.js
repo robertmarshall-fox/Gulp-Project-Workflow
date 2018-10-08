@@ -1,13 +1,22 @@
 var gulp                = require('gulp');
-var fs                  = require('fs');
 var GulpSSH             = require('gulp-ssh');
 
 var config              = require('../../../workflow-config');
 
 /**
+ * 1. check wp-cli exists
+ * 2. check managewp thing exists
+ * 3. find staging server details
+ * 4. push database & media
+ * 5. show progress?
+ */
+
+/**
  * git-stage    -     Pull to staging from build
  * *****************************************************************************
  */
+
+/**
 
  var gulpSSH = new GulpSSH({
    ignoreErrors: false,
@@ -29,3 +38,5 @@ gulp.task( 'git-ssh-exec', function() {
         .exec(['uptime', 'ls -a', 'pwd'], {filePath: 'commands.log'})
         .pipe(gulp.dest('logs'))
 });
+
+**/
