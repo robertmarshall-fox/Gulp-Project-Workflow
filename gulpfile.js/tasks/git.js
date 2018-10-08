@@ -7,6 +7,10 @@ var wait                = require('gulp-wait');
 
 var config              = require('../../gulpconfig');
 
+/**
+ * git-kickoff   -   Initialise the project
+ * *****************************************************************************
+ */
 
 /**
  * These tasks do the following to kick a project off:
@@ -36,10 +40,13 @@ gulp.task( 'git-kickoff', function() {
 
 
 // Create Git
-gulp.task( 'git-init', function() {
+gulp.task( 'git-init', function( done ) {
     console.log('Creating Git');
     git.init(function (err) {
-        if (err) throw err;
+        if (err) {
+            done(err);
+        }
+        done();
     });
 });
 
@@ -48,7 +55,7 @@ gulp.task( 'git-init', function() {
 gulp.task('git-add-existing', function() {
     console.log('adding existing');
     return gulp.src('./package-lock.json')
-        .pipe(wait(1500))
+        //.pipe(wait(1500))
         .pipe(git.add());
 });
 
@@ -99,3 +106,24 @@ gulp.task('git-checkout-build', function(){
         if (err) throw err;
     });
 });
+
+
+/**
+ * git-stage    -
+ * *****************************************************************************
+ */
+
+ gulp.task( 'git-stage', function() {
+     if( config.packageJson && config.packageJson.repository.url ){
+         console.log('Pushing project to staging server');
+         runSequence(
+             'git-init',
+             'git-add-existing',
+             'git-commit',
+             'git-branch',
+             'git-addremote',
+             'git-publish',
+             'git-checkout-build'
+         );
+     }
+ });
