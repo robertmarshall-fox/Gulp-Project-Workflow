@@ -106,7 +106,7 @@ gulp.task('git-publish-master', function(){
          });
 
          console.log('Move into theme dir and clone master branch'.red);
-         
+
          // Move into the theme dir
          // Init git
          // clone stage branch
@@ -130,21 +130,27 @@ gulp.task('git-publish-master', function(){
 
  gulp.task( 'git-pull-master', function() {
 
-     console.log('Logging into live server...'.red);
+     if( gulpConfig.packageJson && gulpConfig.packageJson.repository.url ){
 
-     // Create object for stage
-     var liveSSH = new GulpSSH({
-         ignoreErrors: false,
-         sshConfig: config.live.sslConfig
-     });
+         var repository = gulpConfig.packageJson.repository.url;
 
-     console.log('Move into theme dir and pull master branch'.red);
-     // Move into the theme dir
-     // pull master branch
-     return liveSSH
-        .shell(
-            'cd public_html/wp-content/themes/' + config.themeFolder + ' && ' +
-            'git pull origin master'
-        , {filePath: 'shell.log'})
-        .pipe(gulp.dest('./'));
+         console.log('Logging into live server...'.red);
+
+         // Create object for stage
+         var liveSSH = new GulpSSH({
+             ignoreErrors: false,
+             sshConfig: config.live.sslConfig
+         });
+
+         console.log('Move into theme dir and pull master branch'.red);
+         // Move into the theme dir
+         // pull master branch
+         return liveSSH
+            .shell(
+                'cd public_html/wp-content/themes/' + config.themeFolder + ' && ' +
+                'git pull ' + repository + ' master'
+            , {filePath: 'shell.log'})
+            .pipe(gulp.dest('./'));
+
+    }
  });

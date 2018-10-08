@@ -100,7 +100,7 @@ gulp.task('git-publish-stage', function(){
          });
 
          console.log('Move into theme dir and clone stage branch'.red);
-         
+
          // Move into the theme dir
          // Init git
          // clone stage branch
@@ -125,21 +125,28 @@ gulp.task('git-publish-stage', function(){
 
  gulp.task( 'git-pull-stage', function() {
 
-     console.log('Logging into stage server...'.red);
+     if( gulpConfig.packageJson && gulpConfig.packageJson.repository.url ){
 
-     // Create object for stage
-     var stageSSH = new GulpSSH({
-         ignoreErrors: false,
-         sshConfig: config.staging.sslConfig
-     });
+         var repository = gulpConfig.packageJson.repository.url;
 
-     console.log('Move into theme dir and pull stage branch'.red);
-     // Move into the theme dir
-     // pull stage branch
-     return stageSSH
-        .shell(
-            'cd public_html/wp-content/themes/' + config.themeFolder + ' && ' +
-            'git pull origin stage'
-        , {filePath: 'shell.log'})
-        .pipe(gulp.dest('./'));
+         console.log('Logging into stage server...'.red);
+
+         // Create object for stage
+         var stageSSH = new GulpSSH({
+             ignoreErrors: false,
+             sshConfig: config.staging.sslConfig
+         });
+
+         console.log('Move into theme dir and pull stage branch'.red);
+
+         // Move into the theme dir
+         // pull stage branch
+         return stageSSH
+            .shell(
+                'cd public_html/wp-content/themes/' + config.themeFolder + ' && ' +
+                'git pull ' + repository + ' stage'
+            , {filePath: 'shell.log'})
+            .pipe(gulp.dest('./'));
+
+    }
  });
