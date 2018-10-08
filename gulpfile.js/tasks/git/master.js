@@ -1,9 +1,10 @@
 var gulp                = require('gulp');
 var git                 = require('gulp-git');
-
 var colors              = require('colors');
-
 var prompt              = require('gulp-prompt');
+
+var shell               = require('gulp-shell');
+var GulpSSH             = require('gulp-ssh');
 
 var config              = require('../../../gulpconfig');
 
@@ -83,3 +84,67 @@ gulp.task('git-publish-master', function(){
         }
     });
 });
+
+
+/**
+ * git-clone-master   -   Clone files from master branch
+ * *****************************************************************************
+ */
+
+ gulp.task( 'git-clone-master', function() {
+
+     if( gulpConfig.packageJson && gulpConfig.packageJson.repository.url ){
+
+         var repository = gulpConfig.packageJson.repository.url;
+
+         console.log('Logging into live server...'.red);
+
+         // Create object for stage
+         var liveSSH = new GulpSSH({
+             ignoreErrors: false,
+             sshConfig: config.live.sslConfig
+         });
+
+         console.log('Move into theme dir and clone master branch'.red);
+         
+         // Move into the theme dir
+         // Init git
+         // clone stage branch
+         return liveSSH
+            .shell(
+                'cd public_html/wp-content/themes/' + config.themeFolder + ' && ' +
+                'git init && ' +
+                'git clone ' + repository
+            , {filePath: 'shell.log'})
+            .pipe(gulp.dest('./'));
+
+    }
+
+ });
+
+
+/**
+ * git-pull-master   -   Pull files from master branch
+ * *****************************************************************************
+ */
+
+ gulp.task( 'git-pull-master', function() {
+
+     console.log('Logging into live server...'.red);
+
+     // Create object for stage
+     var liveSSH = new GulpSSH({
+         ignoreErrors: false,
+         sshConfig: config.live.sslConfig
+     });
+
+     console.log('Move into theme dir and pull master branch'.red);
+     // Move into the theme dir
+     // pull master branch
+     return liveSSH
+        .shell(
+            'cd public_html/wp-content/themes/' + config.themeFolder + ' && ' +
+            'git pull origin master'
+        , {filePath: 'shell.log'})
+        .pipe(gulp.dest('./'));
+ });
