@@ -76,7 +76,7 @@ gulp.task('git-merge-stage', function(){
 
 // Push all current files to master
 gulp.task('git-publish-master', function(){
-    console.log('Publishng to master...'.red);
+    console.log('Publishing to master...'.red);
     git.push('origin', 'master', function (err) {
         if (err) {
             throw err;
