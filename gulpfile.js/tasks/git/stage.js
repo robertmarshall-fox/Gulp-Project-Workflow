@@ -21,8 +21,8 @@ var config              = require('../../../gulpconfig');
  */
 
  gulp.task( 'git-stage', function() {
-         console.log('Lets push to staging branch');
-         gulp.start('git-confirm-staging-merge')
+     console.log('Lets push to staging branch');
+     gulp.start('git-confirm-staging-merge');
  });
 
 
