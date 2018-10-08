@@ -1,10 +1,12 @@
 var gulp                = require('gulp');
 var git                 = require('gulp-git');
 var prompt              = require('gulp-prompt');
-
 var colors              = require('colors');
+var shell               = require('gulp-shell');
+var GulpSSH             = require('gulp-ssh');
 
 var config              = require('../../../gulpconfig');
+var gulpConfig          = require('../../../gulpconfig');
 
 /**
  * git-stage   -   Push files to staging branch
@@ -76,3 +78,64 @@ gulp.task('git-publish-stage', function(){
         }
     });
 });
+
+
+/**
+ * git-clone-stage   -   Clone files from staging branch
+ * *****************************************************************************
+ */
+
+ gulp.task( 'git-clone-stage', function() {
+
+     if( gulpConfig.packageJson && gulpConfig.packageJson.repository.url ){
+
+         var repository = gulpConfig.packageJson.repository.url;
+
+         console.log('Logging into stage server...'.red);
+
+         // Create object for stage
+         var stageSSH = new GulpSSH({
+             ignoreErrors: false,
+             sshConfig: config.staging.sslConfig
+         });
+
+         console.log('Move into theme dir and clone stage branch'.red);
+         // Move into the theme dir
+         // Init git
+         // clone stage branch
+         return stageSSH
+            .shell(
+                'cd public_html/wp-content/themes/' +
+                config.themeFolder + ' && ' +
+                'git init && ' +
+                'git clone --single-branch -b stage ' + repository + ' && ' +
+                'git checkout'
+            , {filePath: 'shell.log'})
+            .pipe(gulp.dest('./'));
+
+    }
+
+ });
+
+
+/**
+ * git-pull-stage   -   Pull files from staging branch
+ * *****************************************************************************
+ */
+
+ gulp.task( 'git-pull-stage', function() {
+
+     console.log('Logging into stage server...'.red);
+
+     // Create object for stage
+     var stageSSH = new GulpSSH({
+         ignoreErrors: false,
+         sshConfig: config.staging.sslConfig
+     });
+
+     console.log('Move into theme dir and pull stage branch'.red);
+     // Move into the public dir and download wp-cli
+     return stageSSH
+        .shell('cd public_html/wp-content/themes/' + config.themeFolder + ' && git checkout stage && git pull origin stage', {filePath: 'shell.log'})
+        .pipe(gulp.dest('./'));
+ });
