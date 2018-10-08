@@ -4,7 +4,7 @@ var fs           = require('fs');
 // Parse values from package.json
 var getPackageJSON = function() {
     var path = './package.json';
-    if( fs.existsSync() ){
+    if( fs.existsSync( path ) ){
         return JSON.parse(fs.readFileSync(path, 'utf8'));
     }
     return false;
