@@ -4,6 +4,8 @@ var fileExists          = require('file-exists');
 var git                 = require('gulp-git');
 var prompt              = require('gulp-prompt');
 
+var colors              = require('colors');
+
 var config              = require('../../../gulpconfig');
 
 /**
@@ -21,7 +23,7 @@ var config              = require('../../../gulpconfig');
  */
 
  gulp.task( 'git-stage', function() {
-     console.log('Lets push to staging branch');
+     console.log('Lets push to staging branch'.red);
      gulp.start('git-confirm-staging-merge');
  });
 
@@ -31,7 +33,7 @@ var config              = require('../../../gulpconfig');
      .pipe(prompt.prompt({
          type: 'confirm',
          name: 'start',
-         message: 'Are you sure you are ready to stage?'
+         message: 'Are you sure you are ready to stage?'.bgRed.white
      }, function(res){
          if(res.start){
              gulp.start('git-move-to-stage');
@@ -42,7 +44,7 @@ var config              = require('../../../gulpconfig');
 
 // Move to stage branch
 gulp.task( 'git-move-to-stage', function() {
-    console.log('Moved to stage branch');
+    console.log('Moved to stage branch'.red);
     git.checkout('stage', function (err) {
         if (err) {
             throw err;
@@ -67,7 +69,7 @@ gulp.task('git-merge-build', function(){
 
 // Push all current files to master
 gulp.task('git-publish-stage', function(){
-    console.log('Publish to stage');
+    console.log('Publish to stage'.red);
     git.push('origin', 'stage', function (err) {
         if (err) {
             throw err;
