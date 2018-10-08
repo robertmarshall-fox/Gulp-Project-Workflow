@@ -59,7 +59,7 @@ gulp.task( 'git-move-to-stage', function( done ) {
 
 
 // Merge build to current branch
-gulp.task('git-merge-build', function(){
+gulp.task('git-merge-build', function( done ){
     git.merge('build', function (err) {
         if (err) {
             done(err);

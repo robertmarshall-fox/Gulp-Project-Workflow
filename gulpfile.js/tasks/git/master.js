@@ -65,7 +65,7 @@ gulp.task( 'git-move-to-master', function( done ) {
 
 
 // Merge stage to current branch
-gulp.task('git-merge-stage', function(){
+gulp.task('git-merge-stage', function( done ){
     git.merge('stage', function (err) {
         if (err) {
             done(err);
