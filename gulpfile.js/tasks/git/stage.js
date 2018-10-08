@@ -15,10 +15,9 @@ var config              = require('../../../gulpconfig');
  * These tasks do the following to stage the project:
  * 1. Confirm ready to push to stage branch
  * 2. Move branch to stage
- * 3. Get commit message
- * 4. Merge built branch to stage
- * 5. Publishes Git
- * 6. Moves current branch to build
+ * 3. Merge built branch to stage
+ * 4. Publishes Git
+ * 5. Moves current branch to build
  */
 
  gulp.task( 'git-stage', function() {
