@@ -41,7 +41,7 @@ var config              = require('../../../gulpconfig');
  });
 
 
- gulp.task('git-confirm-staging-merge', function( done ){
+ gulp.task('git-confirm-master-merge', function( done ){
      return gulp.src( './*')
      .pipe(prompt.prompt({
          type: 'confirm',
