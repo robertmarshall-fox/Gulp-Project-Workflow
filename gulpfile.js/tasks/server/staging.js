@@ -1,42 +1,38 @@
 var gulp                = require('gulp');
+var shell               = require('gulp-shell');
 var GulpSSH             = require('gulp-ssh');
+var prompt              = require('gulp-prompt');
 
 var config              = require('../../../workflow-config');
 
-/**
- * 1. check wp-cli exists
- * 2. check managewp thing exists
- * 3. find staging server details
- * 4. push database & media
- * 5. show progress?
- */
 
 /**
- * git-stage    -     Pull to staging from build
+ * git-stage   -   Pull files from staging branch
  * *****************************************************************************
  */
 
-/**
+ gulp.task( 'git-pull-stage', function() {
 
- var gulpSSH = new GulpSSH({
-   ignoreErrors: false,
-   sshConfig: config.sslConfig
- })
+     console.log('Logging into stage server...'.red);
 
- gulp.task( 'git-stage', function() {
-     if( config.packageJson && config.packageJson.repository.url ){
-         console.log('Push project to staging server');
-         runSequence(
-             'git-ssh-exec',
-         );
-     }
+     // Create object for stage
+     var stageSSH = new GulpSSH({
+         ignoreErrors: false,
+         sshConfig: config.staging.sslConfig
+     });
+
+     console.log('Move into theme dir and pull stage branch'.red);
+     // Move into the public dir and download wp-cli
+     return stageSSH
+        .shell('cd public_html/wp-content/themes/' + config.themeFolder + ' && git checkout stage && git pull origin stage', {filePath: 'shell.log'})
+        .pipe(gulp.dest('./'));
  });
 
+ /**
+  * stage-database-media   -   Pull files from local enviroment
+  * *****************************************************************************
+  */
 
-gulp.task( 'git-ssh-exec', function() {
-    return gulpSSH
-        .exec(['uptime', 'ls -a', 'pwd'], {filePath: 'commands.log'})
-        .pipe(gulp.dest('logs'))
+gulp.task( 'stage-database-media', function() {
+
 });
-
-**/
