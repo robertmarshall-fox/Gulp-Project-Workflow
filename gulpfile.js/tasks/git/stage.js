@@ -25,7 +25,7 @@ var checkDetails        = require('../helpers/checkDetails.js');
 
  gulp.task( 'git-stage', function() {
      // First check we have details
-     if ( SSHDetails.check(config.stage.sslConfig) && checkDetails.git(gulpConfig.packageJson)  ){
+     if ( checkDetails.check(config.staging.sslConfig) && checkDetails.git(gulpConfig.packageJson)  ){
          console.log('Lets push to stage branch'.red);
          gulp.start('git-confirm-staging-merge');
      }
@@ -91,7 +91,7 @@ gulp.task('git-publish-stage', function(){
 
  gulp.task( 'git-clone-stage', function() {
 
-     if( checkDetails.ssl(config.stage.sslConfig) && checkDetails.git(gulpConfig.packageJson) ){
+     if( checkDetails.ssl(config.staging.sslConfig) && checkDetails.git(gulpConfig.packageJson) ){
 
          var repository = gulpConfig.packageJson.repository.url;
 
@@ -131,7 +131,7 @@ gulp.task('git-publish-stage', function(){
 
      // Make sure we have all the details
 
-     if( checkDetails.ssl(config.stage.sslConfig) && checkDetails.git(gulpConfig.packageJson) ){
+     if( checkDetails.ssl(config.staging.sslConfig) && checkDetails.git(gulpConfig.packageJson) ){
 
          var repository = gulpConfig.packageJson.repository.url;
 
