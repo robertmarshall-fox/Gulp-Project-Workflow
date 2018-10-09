@@ -1,6 +1,5 @@
 var gulp                = require('gulp');
 var shell               = require('gulp-shell');
-var runSequence         = require('run-sequence');
 var prompt              = require('gulp-prompt');
 
 var config              = require('../../../workflow-config');
@@ -12,7 +11,7 @@ var config              = require('../../../workflow-config');
 
 /**
  * These tasks do the following:
- * 1. Installs on local
+ * 1. Installs wp-cli on local
  */
 
 gulp.task('local-wp-cli-setup', () => {
