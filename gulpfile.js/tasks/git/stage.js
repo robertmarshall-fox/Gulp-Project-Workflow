@@ -7,6 +7,7 @@ var GulpSSH             = require('gulp-ssh');
 
 var config              = require('../../../workflow-config');
 var gulpConfig          = require('../../../gulpconfig');
+var checkDetails        = require('../helpers/checkDetails.js');
 
 /**
  * git-stage   -   Push files to staging branch
@@ -23,8 +24,11 @@ var gulpConfig          = require('../../../gulpconfig');
  */
 
  gulp.task( 'git-stage', function() {
-     console.log('Lets push to staging branch'.red);
-     gulp.start('git-confirm-staging-merge');
+     // First check we have details
+     if ( SSHDetails.check(config.stage.sslConfig) && checkDetails.git(gulpConfig.packageJson)  ){
+         console.log('Lets push to stage branch'.red);
+         gulp.start('git-confirm-staging-merge');
+     }
  });
 
 
@@ -87,7 +91,7 @@ gulp.task('git-publish-stage', function(){
 
  gulp.task( 'git-clone-stage', function() {
 
-     if( gulpConfig.packageJson && gulpConfig.packageJson.repository.url ){
+     if( checkDetails.ssl(config.stage.sslConfig) && checkDetails.git(gulpConfig.packageJson) ){
 
          var repository = gulpConfig.packageJson.repository.url;
 
@@ -125,7 +129,9 @@ gulp.task('git-publish-stage', function(){
 
  gulp.task( 'git-pull-stage', function() {
 
-     if( gulpConfig.packageJson && gulpConfig.packageJson.repository.url ){
+     // Make sure we have all the details
+
+     if( checkDetails.ssl(config.stage.sslConfig) && checkDetails.git(gulpConfig.packageJson) ){
 
          var repository = gulpConfig.packageJson.repository.url;
 
