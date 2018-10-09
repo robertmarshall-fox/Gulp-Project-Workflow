@@ -5,6 +5,12 @@ var prompt              = require('gulp-prompt');
 var config              = require('../../../workflow-config');
 
 /**
+ * @ TODO
+ * Currently depending on wp-migrate to pull/push database and media. Be nice
+ * to move this across to only using wp-cli and some other media management
+ */
+
+/**
   * stage-database-media   -   Pull files from local enviroment
   * *****************************************************************************
   */
