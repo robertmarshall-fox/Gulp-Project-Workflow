@@ -105,7 +105,6 @@ gulp.task('git-checkout-build', function(){
             throw err;
         } else {
             console.log('and back to build!!!'.red);
-            console.log('you can carry on now'.yellow);
         }
     });
 });
