@@ -24,7 +24,6 @@ var checkDetails        = require('../helpers/checkDetails.js');
 
 gulp.task( 'git-kickoff', function() {
     if( checkDetails.git(config.packageJson) ){
-        console.log('Lets kick it off'.red);
         runSequence(
             'git-init',
             'git-add-existing',
