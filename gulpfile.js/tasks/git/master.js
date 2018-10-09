@@ -1,13 +1,14 @@
 var gulp                = require('gulp');
-var fs                  = require('fs');
-var fileExists          = require('file-exists');
 var git                 = require('gulp-git');
-
-var colors              = require('colors');
-
 var prompt              = require('gulp-prompt');
+var colors              = require('colors');
+var shell               = require('gulp-shell');
+var GulpSSH             = require('gulp-ssh');
 
-var config              = require('../../../gulpconfig');
+var config              = require('../../../workflow-config');
+var gulpConfig          = require('../../../gulpconfig');
+var checkDetails        = require('../helpers/checkDetails.js');
+
 
 /**
  * git-master   -   Push files to master branch
@@ -30,8 +31,11 @@ var config              = require('../../../gulpconfig');
  */
 
  gulp.task( 'git-master', function() {
-     console.log('Lets push to master branch'.red);
-     gulp.start('git-confirm-master-merge');
+     // First check we have details
+     if ( SSHDetails.check(config.live.sslConfig) && checkDetails.git(gulpConfig.packageJson)  ){
+         console.log('Lets push to master branch'.red);
+         gulp.start('git-confirm-master-merge');
+     }
  });
 
 
@@ -76,7 +80,7 @@ gulp.task('git-merge-stage', function(){
 
 // Push all current files to master
 gulp.task('git-publish-master', function(){
-    console.log('Publishng to master...'.red);
+    console.log('Publishing to master...'.red);
     git.push('origin', 'master', function (err) {
         if (err) {
             throw err;
@@ -85,3 +89,75 @@ gulp.task('git-publish-master', function(){
         }
     });
 });
+
+
+/**
+ * git-clone-master   -   Clone files from master branch
+ * *****************************************************************************
+ */
+
+ gulp.task( 'git-clone-master', function() {
+
+     if( checkDetails.ssl(config.live.sslConfig) && checkDetails.git(gulpConfig.packageJson) ){
+
+         var repository = gulpConfig.packageJson.repository.url;
+
+         console.log('Logging into live server...'.red);
+
+         // Create object for stage
+         var liveSSH = new GulpSSH({
+             ignoreErrors: false,
+             sshConfig: config.live.sslConfig
+         });
+
+         console.log('Move into theme dir and clone master branch'.red);
+
+         // Move into the theme dir
+         // Init git
+         // clone stage branch
+         return liveSSH
+            .shell(
+                'cd public_html/wp-content/themes/' + config.themeFolder + ' && ' +
+                'git init && ' +
+                'git clone ' + repository
+            , {filePath: 'shell.log'})
+            .pipe(gulp.dest('./'));
+
+    }
+
+ });
+
+
+/**
+ * git-pull-master   -   Pull files from master branch
+ * *****************************************************************************
+ */
+
+ gulp.task( 'git-pull-master', function() {
+
+     // Make sure we have all the details
+
+     if( checkDetails.ssl(config.live.sslConfig) && checkDetails.git(gulpConfig.packageJson) ){
+
+         var repository = gulpConfig.packageJson.repository.url;
+
+         console.log('Logging into live server...'.red);
+
+         // Create object for stage
+         var liveSSH = new GulpSSH({
+             ignoreErrors: false,
+             sshConfig: config.live.sslConfig
+         });
+
+         console.log('Move into theme dir and pull master branch'.red);
+         // Move into the theme dir
+         // pull master branch
+         return liveSSH
+            .shell(
+                'cd public_html/wp-content/themes/' + config.themeFolder + ' && ' +
+                'git pull ' + repository + ' master'
+            , {filePath: 'shell.log'})
+            .pipe(gulp.dest('./'));
+
+    }
+ });

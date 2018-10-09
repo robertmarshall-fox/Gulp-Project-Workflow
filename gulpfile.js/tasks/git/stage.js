@@ -1,12 +1,13 @@
 var gulp                = require('gulp');
-var fs                  = require('fs');
-var fileExists          = require('file-exists');
 var git                 = require('gulp-git');
 var prompt              = require('gulp-prompt');
-
 var colors              = require('colors');
+var shell               = require('gulp-shell');
+var GulpSSH             = require('gulp-ssh');
 
-var config              = require('../../../gulpconfig');
+var config              = require('../../../workflow-config');
+var gulpConfig          = require('../../../gulpconfig');
+var checkDetails        = require('../helpers/checkDetails.js');
 
 /**
  * git-stage   -   Push files to staging branch
@@ -23,8 +24,11 @@ var config              = require('../../../gulpconfig');
  */
 
  gulp.task( 'git-stage', function() {
-     console.log('Lets push to staging branch'.red);
-     gulp.start('git-confirm-staging-merge');
+     // First check we have details
+     if ( checkDetails.ssl(config.staging.sslConfig) && checkDetails.git(gulpConfig.packageJson)  ){
+         console.log('Lets push to stage branch'.red);
+         gulp.start('git-confirm-staging-merge');
+     }
  });
 
 
@@ -78,3 +82,77 @@ gulp.task('git-publish-stage', function(){
         }
     });
 });
+
+
+/**
+ * git-clone-stage   -   Clone files from staging branch
+ * *****************************************************************************
+ */
+
+ gulp.task( 'git-clone-stage', function() {
+
+     if( checkDetails.ssl(config.staging.sslConfig) && checkDetails.git(gulpConfig.packageJson) ){
+
+         var repository = gulpConfig.packageJson.repository.url;
+
+         console.log('Logging into stage server...'.red);
+
+         // Create object for stage
+         var stageSSH = new GulpSSH({
+             ignoreErrors: false,
+             sshConfig: config.staging.sslConfig
+         });
+
+         console.log('Move into theme dir and clone stage branch'.red);
+
+         // Move into the theme dir
+         // Init git
+         // clone stage branch
+         return stageSSH
+            .shell(
+                'cd public_html/wp-content/themes/' + config.themeFolder + ' && ' +
+                'git init && ' +
+                'git clone --single-branch -b stage ' + repository + ' && ' +
+                'git checkout'
+            , {filePath: 'shell.log'})
+            .pipe(gulp.dest('./'));
+
+    }
+
+ });
+
+
+/**
+ * git-pull-stage   -   Pull files from staging branch
+ * *****************************************************************************
+ */
+
+ gulp.task( 'git-pull-stage', function() {
+
+     // Make sure we have all the details
+
+     if( checkDetails.ssl(config.staging.sslConfig) && checkDetails.git(gulpConfig.packageJson) ){
+
+         var repository = gulpConfig.packageJson.repository.url;
+
+         console.log('Logging into stage server...'.red);
+
+         // Create object for stage
+         var stageSSH = new GulpSSH({
+             ignoreErrors: false,
+             sshConfig: config.staging.sslConfig
+         });
+
+         console.log('Move into theme dir and pull stage branch'.red);
+
+         // Move into the theme dir
+         // pull stage branch
+         return stageSSH
+            .shell(
+                'cd public_html/wp-content/themes/' + config.themeFolder + ' && ' +
+                'git pull ' + repository + ' stage'
+            , {filePath: 'shell.log'})
+            .pipe(gulp.dest('./'));
+
+    }
+ });
