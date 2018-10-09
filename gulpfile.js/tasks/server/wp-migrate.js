@@ -41,7 +41,7 @@ gulp.task( 'run-stage-database-media', shell.task(
   * *****************************************************************************
   */
 
-gulp.task( 'stage-database-media', function() {
+gulp.task( 'get-live-database-media', function() {
     return gulp.src( './*')
     .pipe(prompt.prompt({
         type: 'confirm',
