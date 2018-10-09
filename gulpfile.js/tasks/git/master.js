@@ -32,7 +32,7 @@ var checkDetails        = require('../helpers/checkDetails.js');
 
  gulp.task( 'git-master', function() {
      // First check we have details
-     if ( SSHDetails.check(config.live.sslConfig) && checkDetails.git(gulpConfig.packageJson)  ){
+     if ( checkDetails.git(gulpConfig.packageJson)  ){
          console.log('Lets push to master branch'.red);
          gulp.start('git-confirm-master-merge');
      }
