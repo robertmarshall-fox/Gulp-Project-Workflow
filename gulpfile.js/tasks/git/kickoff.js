@@ -1,10 +1,10 @@
 var gulp                = require('gulp');
 var git                 = require('gulp-git');
 var runSequence         = require('run-sequence');
-
 var colors              = require('colors');
 
 var config              = require('../../../gulpconfig');
+var checkDetails        = require('../helpers/checkDetails.js');
 
 /**
  * git-kickoff   -   Initialise the project
@@ -23,7 +23,7 @@ var config              = require('../../../gulpconfig');
  */
 
 gulp.task( 'git-kickoff', function() {
-    if( config.packageJson && config.packageJson.repository.url ){
+    if( checkDetails.git(config.packageJson) ){
         console.log('Lets kick it off'.red);
         runSequence(
             'git-init',
@@ -81,10 +81,12 @@ gulp.task('git-branch', function(){
 
 // Add remote
 gulp.task('git-addremote', function(){
-    console.log('Add remote origin'.red);
-    git.addRemote('origin', config.packageJson.repository.url, function (err) {
-        if (err) throw err;
-    });
+    if( checkDetails.git(config.packageJson) ){
+        console.log('Add remote origin'.red);
+        git.addRemote('origin', config.packageJson.repository.url, function (err) {
+            if (err) throw err;
+        });
+    }
 });
 
 
