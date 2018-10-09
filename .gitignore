@@ -46,4 +46,4 @@ composer.lock
 node_modules
 
 # Gulp Config File
-workflow-config.json
+workflow-config.js

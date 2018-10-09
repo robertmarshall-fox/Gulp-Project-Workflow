@@ -1,12 +1,10 @@
 var gulp                = require('gulp');
-var fs                  = require('fs');
-var fileExists          = require('file-exists');
 var git                 = require('gulp-git');
 var runSequence         = require('run-sequence');
-
 var colors              = require('colors');
 
 var config              = require('../../../gulpconfig');
+var checkDetails        = require('../helpers/checkDetails.js');
 
 /**
  * git-kickoff   -   Initialise the project
@@ -25,8 +23,7 @@ var config              = require('../../../gulpconfig');
  */
 
 gulp.task( 'git-kickoff', function() {
-    if( config.packageJson && config.packageJson.repository.url ){
-        console.log('Lets kick it off'.red);
+    if( checkDetails.git(config.packageJson) ){
         runSequence(
             'git-init',
             'git-add-existing',
@@ -83,10 +80,12 @@ gulp.task('git-branch', function(){
 
 // Add remote
 gulp.task('git-addremote', function(){
-    console.log('Add remote origin'.red);
-    git.addRemote('origin', config.packageJson.repository.url, function (err) {
-        if (err) throw err;
-    });
+    if( checkDetails.git(config.packageJson) ){
+        console.log('Add remote origin'.red);
+        git.addRemote('origin', config.packageJson.repository.url, function (err) {
+            if (err) throw err;
+        });
+    }
 });
 
 
@@ -107,7 +106,6 @@ gulp.task('git-checkout-build', function(){
             throw err;
         } else {
             console.log('and back to build!!!'.red);
-            console.log('you can carry on now'.yellow);
         }
     });
 });
