@@ -9,6 +9,10 @@ module.exports = {
         computerName: computerName,
     },
     staging: {
+        basicAuth{
+            user: '',
+            pass: '',
+        }
         wpMigrateSecretKey: '',
         sslConfig: {
             host: '',
