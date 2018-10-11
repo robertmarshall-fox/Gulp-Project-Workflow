@@ -9,10 +9,11 @@ module.exports = {
         computerName: computerName,
     },
     staging: {
-        basicAuth{
+        basicAuth: {
             user: '',
             pass: '',
-        }
+        },
+        wpURL: '',
         wpMigrateSecretKey: '',
         sslConfig: {
             host: '',
@@ -23,6 +24,11 @@ module.exports = {
         }
     },
     live: {
+        basicAuth: {
+            user: '',
+            pass: '',
+        },
+        wpURL: '',
         wpMigrateSecretKey: '',
         sslConfig: {
             host: '',

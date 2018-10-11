@@ -3,6 +3,7 @@ var shell               = require('gulp-shell');
 var prompt              = require('gulp-prompt');
 
 var config              = require('../../../workflow-config');
+var checkBasicAuth      = require('../helpers/getBasicAuth.js');
 
 /**
  * @ TODO
@@ -24,8 +25,12 @@ gulp.task( 'stage-database-media', function() {
     }, function(res){
         if(res.start){
 
-            console.log('Copying local media and database to staging'.red);
-            gulp.start('run-stage-database-media');
+            if( checkBasicAuth.getDetails('staging', config) ){
+
+                console.log('Copying local media and database to staging'.red);
+                gulp.start('run-stage-database-media');
+
+            }
 
         }
     }));
@@ -35,7 +40,7 @@ gulp.task( 'stage-database-media', function() {
 gulp.task( 'run-stage-database-media', shell.task(
     'cd ../../../ && ' +
     'php wp-cli.phar migratedb push ' +
-    config.staging.wpURL + ' ' +
+    getURL('staging') + ' ' +
     config.staging.wpMigrateSecretKey + ' ' +
     '--backup' + ' ' +
     '--media=remove-and-copy'
@@ -56,8 +61,12 @@ gulp.task( 'get-live-database-media', function() {
     }, function(res){
         if(res.start){
 
-            console.log('Copying local media and database from live site'.red);
-            gulp.start('run-live-database-media');
+            if( checkBasicAuth.getDetails('live', config) ){
+
+                console.log('Copying local media and database from live site'.red);
+                gulp.start('run-live-database-media');
+
+            }
 
         }
     }));
@@ -67,8 +76,18 @@ gulp.task( 'get-live-database-media', function() {
 gulp.task( 'run-live-database-media', shell.task(
     'cd ../../../ && ' +
     'php wp-cli.phar migratedb pull ' +
-    config.live.wpURL + ' ' +
+    getURL('live') + ' ' +
     config.live.wpMigrateSecretKey + ' ' +
     '--backup' + ' ' +
     '--media=remove-and-copy'
 ));
+
+
+
+
+function getURL(server) {
+    return checkBasicAuth.makeURL(
+        checkBasicAuth.getDetails(server, config),
+        config[server].wpURL
+    );
+}
