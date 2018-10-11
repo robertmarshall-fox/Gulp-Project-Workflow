@@ -1,7 +1,15 @@
 var gulp         = require('gulp'); // Gulp of-course
 var fs           = require('fs');
 
-const computerName = '';
+const computerName = 'RobMarshall';
+
+function getSSHFile( computerName ){
+    var path = '/Users/' + computerName + '/.ssh/id_rsa';
+    if (fs.existsSync(path)) {
+        return fs.readFileSync( path );
+    }
+    return '';
+}
 
 module.exports = {
     themeFolder: '',
@@ -11,22 +19,22 @@ module.exports = {
     staging: {
         basicAuth: {
             user: '',
-            pass: '',
+            pass: ''
         },
-        wpURL: '',
+        wpURL: 'http://www.google.com',
         wpMigrateSecretKey: '',
         sslConfig: {
             host: '',
             port: 22,
             passphrase: '',
             username: '',
-            privateKey: fs.readFileSync('/Users/' + computerName + '/.ssh/id_rsa')
+            privateKey: getSSHFile( computerName )
         }
     },
     live: {
         basicAuth: {
             user: '',
-            pass: '',
+            pass: ''
         },
         wpURL: '',
         wpMigrateSecretKey: '',
@@ -34,7 +42,7 @@ module.exports = {
             host: '',
             port: 22,
             username: '',
-            privateKey: fs.readFileSync('/Users/' + computerName + '/.ssh/id_rsa')
+            privateKey: getSSHFile( computerName )
         }
     }
 };
