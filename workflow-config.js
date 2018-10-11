@@ -1,7 +1,7 @@
 var gulp         = require('gulp'); // Gulp of-course
 var fs           = require('fs');
 
-const computerName = 'RobMarshall';
+const computerName = '';
 
 module.exports = {
     themeFolder: '',
@@ -9,16 +9,26 @@ module.exports = {
         computerName: computerName,
     },
     staging: {
+        basicAuth: {
+            user: '',
+            pass: ''
+        },
+        wpURL: 'http://www.google.com',
         wpMigrateSecretKey: '',
         sslConfig: {
-            host: 'fh1.fox.agency',
+            host: '',
             port: 22,
-            passphrase: 'HB6aWUNe6w4&',
-            username: 'workflow',
+            passphrase: '',
+            username: '',
             privateKey: fs.readFileSync('/Users/' + computerName + '/.ssh/id_rsa')
         }
     },
     live: {
+        basicAuth: {
+            user: '',
+            pass: ''
+        },
+        wpURL: '',
         wpMigrateSecretKey: '',
         sslConfig: {
             host: '',
